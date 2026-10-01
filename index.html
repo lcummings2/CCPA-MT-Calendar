@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MT & CCPA Events Calendar</title>
+<meta name="description" content="Shared Fall 2026 calendar of MT & CCPA workshops, masterclasses, productions, and cross-over opportunities for students.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --green: #0B5D3B;
+    --green-mid: #1E8449;
+    --mint: #EAF7EF;
+    --gold: #F4B400;
+    --coral: #FF6F59;
+    --coral-tint: #FDEDEA;
+    --ink: #222222;
+    --sub: #555555;
+    --gray: #F4F4F4;
+    --bg: #FBF9F4;
+    --card-bg: #FFFFFF;
+    --border: #E3DFD2;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14201a;
+      --card-bg: #1b2a22;
+      --ink: #F2F2F2;
+      --sub: #B9C4BD;
+      --mint: #1d3326;
+      --coral-tint: #3a2420;
+      --gray: #22302a;
+      --border: #2d3c33;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14201a;
+    --card-bg: #1b2a22;
+    --ink: #F2F2F2;
+    --sub: #B9C4BD;
+    --mint: #1d3326;
+    --coral-tint: #3a2420;
+    --gray: #22302a;
+    --border: #2d3c33;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  header {
+    background: var(--green);
+    padding: 36px 16px 30px;
+    border-radius: 0 0 28px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: clamp(24px, 5vw, 38px);
+    color: #fff;
+    margin: 0 0 6px;
+  }
+  header p {
+    color: var(--mint);
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0;
+  }
+  header .dot {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px 16px 0;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .filter-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    border: 2px solid var(--green);
+    color: var(--green);
+    background: transparent;
+    border-radius: 999px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--green);
+    color: #fff;
+  }
+
+  .month-block { margin-bottom: 34px; }
+  .month-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--green);
+    margin: 0 0 14px;
+    padding-left: 2px;
+  }
+
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .event-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--green-mid);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .event-card.highlight {
+    border-left-color: var(--gold);
+    background: linear-gradient(180deg, rgba(244,180,0,0.10), var(--card-bg) 40%);
+  }
+  .event-card.club {
+    border-left-color: var(--coral);
+  }
+  .event-date {
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--coral);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+  }
+  .event-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .event-meta {
+    font-size: 12.5px;
+    color: var(--sub);
+    line-height: 1.4;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--green);
+    background: var(--mint);
+    border-radius: 6px;
+    padding: 2px 7px;
+    margin-top: 6px;
+  }
+
+  .callout {
+    max-width: 1000px;
+    margin: 10px auto 0;
+    background: var(--mint);
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .callout p { margin: 0; }
+  .callout .lead {
+    font-weight: 800;
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .callout .sub {
+    font-size: 13px;
+    color: var(--sub);
+  }
+  .callout a { color: var(--green); font-weight: 800; }
+
+  footer {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--sub);
+    padding: 22px 16px 0;
+  }
+
+  @media (max-width: 480px) {
+    .event-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dot" style="top: 18px; left: 14%; width: 11px; height: 11px; background: var(--gold);"></div>
+  <div class="dot" style="bottom: 16px; right: 16%; width: 9px; height: 9px; background: var(--coral);"></div>
+  <h1>MT &amp; CCPA Events Calendar</h1>
+  <p>Fall 2026 &mdash; workshops, masterclasses, productions &amp; cross-over opportunities</p>
+</header>
+
+<main>
+  <div class="filters" role="group" aria-label="Filter events by month">
+    <button class="filter-btn active" data-month="all">All Months</button>
+    <button class="filter-btn" data-month="september">September</button>
+    <button class="filter-btn" data-month="october">October</button>
+    <button class="filter-btn" data-month="november">November</button>
+    <button class="filter-btn" data-month="december">December</button>
+  </div>
+
+  <div class="month-block" data-month="september">
+    <h2 class="month-title">September</h2>
+    <div class="event-grid">
+      <div class="event-card">
+        <div class="event-date">Sept 3</div>
+        <div class="event-title">Fall Forum</div>
+        <div class="event-meta">12:30&ndash;1:15pm &mdash; Goodman Gym</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Sept 11</div>
+        <div class="event-title">John Bucchino Masterclass</div>
+        <div class="event-meta">12:30&ndash;3:30pm &mdash; Ganz Hall (live on Zoom)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month-block" data-month="october">
+    <h2 class="month-title">October</h2>
+    <div class="event-grid">
+      <div class="event-card">
+        <div class="event-date">Oct 2</div>
+        <div class="event-title">Guest Master Class: Sasha Berliner (percussion)</div>
+        <div class="event-meta">10:00&ndash;10:50am &mdash; Music Conservatory, open to CCPA</div>
+      </div>
+      <div class="event-card club">
+        <div class="event-date">Oct 6</div>
+        <div class="event-title">MT Common Hour Sing</div>
+        <div class="event-meta">12:30&ndash;1:30pm &mdash; AUD 730</div>
+        <span class="tag">MT BFA Majors</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 8</div>
+        <div class="event-title">Tap Placements, Day 1</div>
+        <div class="event-meta">12:20&ndash;1:20pm &mdash; Location TBD</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 9</div>
+        <div class="event-title">&ldquo;Little Women&rdquo; (CCPA Musical)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 9</div>
+        <div class="event-title">Nutrition Workshop with Lorelei Sturm</div>
+        <div class="event-meta">1:00&ndash;2:30pm &mdash; 218 S. Wabash, Rm 306</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 10</div>
+        <div class="event-title">&ldquo;Little Women&rdquo; (CCPA Musical)</div>
+        <div class="event-meta">2:00&ndash;4:00pm &amp; 7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 14</div>
+        <div class="event-title">&ldquo;Tempest&rdquo;: CCPA Symphony Orchestra</div>
+        <div class="event-meta">7:30&ndash;9:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 15</div>
+        <div class="event-title">Tap Placements, Day 2</div>
+        <div class="event-meta">12:20&ndash;1:20pm &mdash; Location TBD</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 16</div>
+        <div class="event-title">&ldquo;Little Women&rdquo; (CCPA Musical)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 17</div>
+        <div class="event-title">&ldquo;Little Women&rdquo; (CCPA Musical)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 18</div>
+        <div class="event-title">&ldquo;Little Women&rdquo; (CCPA Musical)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 18</div>
+        <div class="event-title">CCPA Faculty Recital: Almita Vamos, violin</div>
+        <div class="event-meta">2:30&ndash;3:30pm</div>
+      </div>
+      <div class="event-card club">
+        <div class="event-date">Oct 20</div>
+        <div class="event-title">MT Common Hour Sing</div>
+        <div class="event-meta">12:30&ndash;1:30pm &mdash; AUD 730</div>
+        <span class="tag">MT BFA Majors</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 22</div>
+        <div class="event-title">CCPA Brass Ensemble</div>
+        <div class="event-meta">5:00&ndash;6:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 23</div>
+        <div class="event-title">AGMA Presentation &amp; Q&amp;A with Eric Ferring</div>
+        <div class="event-meta">2:00&ndash;3:00pm &mdash; Mikowsky Hall (AUD 907)</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 23</div>
+        <div class="event-title">&ldquo;We Are the Tigers&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 24</div>
+        <div class="event-title">Senior Recital: Chiemerie Obianom, baritone</div>
+        <div class="event-meta">12:00&ndash;1:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 24</div>
+        <div class="event-title">&ldquo;We Are the Tigers&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 25</div>
+        <div class="event-title">CCPA String Chamber Music Recital</div>
+        <div class="event-meta">1:00&ndash;2:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 25</div>
+        <div class="event-title">&ldquo;We Are the Tigers&rdquo; (CCPA Production)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 26</div>
+        <div class="event-title">Master Class with James Gray (Open Jar Studios)</div>
+        <div class="event-meta">11:00am&ndash;12:30pm &mdash; 218 S. Wabash, Rm 305</div>
+        <span class="tag">Pending confirmation</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 26</div>
+        <div class="event-title">CCPA Jazz Combos</div>
+        <div class="event-meta">7:00&ndash;9:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 29</div>
+        <div class="event-title">CCPA Student Composition Recital</div>
+        <div class="event-meta">7:30&ndash;8:30pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 30</div>
+        <div class="event-title">Guest Artist Masterclass: Adam Swayne, piano</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 30</div>
+        <div class="event-title">&ldquo;We Are the Tigers&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Oct 31</div>
+        <div class="event-title">CCPA OperaFest</div>
+        <div class="event-meta">2:30&ndash;5:30pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Oct 31</div>
+        <div class="event-title">&ldquo;We Are the Tigers&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="month-block" data-month="november">
+    <h2 class="month-title">November</h2>
+    <div class="event-grid">
+      <div class="event-card highlight">
+        <div class="event-date">Nov 1</div>
+        <div class="event-title">&ldquo;We Are the Tigers&rdquo; (CCPA Production)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 1</div>
+        <div class="event-title">CCPA OperaFest</div>
+        <div class="event-meta">2:30&ndash;5:30pm</div>
+      </div>
+      <div class="event-card club">
+        <div class="event-date">Nov 3</div>
+        <div class="event-title">MT Common Hour Sing</div>
+        <div class="event-meta">12:30&ndash;1:30pm &mdash; AUD 730</div>
+        <span class="tag">MT BFA Majors</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 3</div>
+        <div class="event-title">CCPA Early Music Ensemble</div>
+        <div class="event-meta">7:30&ndash;9:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 5</div>
+        <div class="event-title">CCPA PianoFest</div>
+        <div class="event-meta">7:00&ndash;8:30pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 6</div>
+        <div class="event-title">CCPA PianoFest</div>
+        <div class="event-meta">4:30&ndash;6:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 7</div>
+        <div class="event-title">CCPA PianoFest</div>
+        <div class="event-meta">11:00am&ndash;12:00pm, 3:30&ndash;4:30pm &amp; 5:30&ndash;6:30pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 9</div>
+        <div class="event-title">Victoria Clark Q&amp;A</div>
+        <div class="event-meta">Sarah Siddons Society &mdash; Ganz Hall &mdash; time TBA</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 13</div>
+        <div class="event-title">CCPA Undergraduate Opera</div>
+        <div class="event-meta">7:30&ndash;10:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Nov 13</div>
+        <div class="event-title">&ldquo;Dancing at Lughnasa&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 14</div>
+        <div class="event-title">CCPA Undergraduate Opera</div>
+        <div class="event-meta">7:30&ndash;10:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Nov 14</div>
+        <div class="event-title">&ldquo;Dancing at Lughnasa&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 15</div>
+        <div class="event-title">CCPA String Chamber Music Recital</div>
+        <div class="event-meta">1:00&ndash;2:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Nov 15</div>
+        <div class="event-title">&ldquo;Dancing at Lughnasa&rdquo; (CCPA Production)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 16</div>
+        <div class="event-title">Guest Master Class: Laura Strickling, soprano</div>
+        <div class="event-meta">4:00&ndash;6:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 16</div>
+        <div class="event-title">CCPA New Deal &amp; Latin Jazz Ensembles</div>
+        <div class="event-meta">7:00&ndash;9:00pm</div>
+      </div>
+      <div class="event-card club">
+        <div class="event-date">Nov 17</div>
+        <div class="event-title">MT Common Hour Sing</div>
+        <div class="event-meta">12:30&ndash;1:30pm &mdash; AUD 730</div>
+        <span class="tag">MT BFA Majors</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 17</div>
+        <div class="event-title">Songs @ Six</div>
+        <div class="event-meta">6:00&ndash;7:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 18</div>
+        <div class="event-title">CCPA String Chamber Music Recital</div>
+        <div class="event-meta">5:00&ndash;6:30pm &amp; 7:30&ndash;9:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Nov 19</div>
+        <div class="event-title">&ldquo;Dancing at Lughnasa&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 19</div>
+        <div class="event-title">CCPA Sinfonietta &amp; Rockefeller Chapel Choir</div>
+        <div class="event-meta">7:30&ndash;8:30pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Nov 20</div>
+        <div class="event-title">&ldquo;Dancing at Lughnasa&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Nov 21</div>
+        <div class="event-title">&ldquo;Dancing at Lughnasa&rdquo; (CCPA Production)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 21</div>
+        <div class="event-title">CCPA Woodwind Chamber Music</div>
+        <div class="event-meta">5:00&ndash;6:30pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Nov 22</div>
+        <div class="event-title">Junior Recital: Nia Quinones, violin</div>
+        <div class="event-meta">12:00&ndash;1:00pm</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="month-block" data-month="december">
+    <h2 class="month-title">December</h2>
+    <div class="event-grid">
+      <div class="event-card">
+        <div class="event-date">Dec 1</div>
+        <div class="event-title">CCPA Horn Studio Recital</div>
+        <div class="event-meta">7:30&ndash;8:30pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 2</div>
+        <div class="event-title">Student Composition Recital</div>
+        <div class="event-meta">7:30&ndash;8:30pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 4</div>
+        <div class="event-title">Guest Master Class: Jihye Chang, piano</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 4</div>
+        <div class="event-title">CCPA Philharmonic Orchestra</div>
+        <div class="event-meta">7:30&ndash;9:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Dec 4</div>
+        <div class="event-title">&ldquo;A Bright Room Called Day&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 5</div>
+        <div class="event-title">Meeting of the Minds</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 5</div>
+        <div class="event-title">Guest Artist Recital: Jihye Chang, piano</div>
+        <div class="event-meta">7:30&ndash;9:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Dec 5</div>
+        <div class="event-title">&ldquo;A Bright Room Called Day&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 6</div>
+        <div class="event-title">Meeting of the Minds</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Dec 6</div>
+        <div class="event-title">&ldquo;A Bright Room Called Day&rdquo; (CCPA Production)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card club">
+        <div class="event-date">Dec 8</div>
+        <div class="event-title">MT Common Hour Sing</div>
+        <div class="event-meta">12:30&ndash;1:30pm &mdash; AUD 730</div>
+        <span class="tag">MT BFA Majors</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 8</div>
+        <div class="event-title">Jess Minter: NYC Auditions &amp; Non-Eq Work</div>
+        <div class="event-meta">Alum talk &mdash; time &amp; location TBD</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 9</div>
+        <div class="event-title">CCPA Piano, String &amp; Composition Collaboration</div>
+        <div class="event-meta">7:30&ndash;8:30pm</div>
+      </div>
+      <div class="event-card club">
+        <div class="event-date">Dec 11</div>
+        <div class="event-title">Jess Minter x Dance Club Combo</div>
+        <div class="event-meta">12:00&ndash;2:00pm &mdash; 218 S. Wabash</div>
+        <span class="tag">Club cross-over</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 11</div>
+        <div class="event-title">CCPA Percussion Ensemble</div>
+        <div class="event-meta">5:00&ndash;6:00pm</div>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 11</div>
+        <div class="event-title">CCPA Vocal Ensemble &amp; Third Coast Symphony</div>
+        <div class="event-meta">7:30&ndash;10:30pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Dec 11</div>
+        <div class="event-title">&ldquo;A Bright Room Called Day&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card">
+        <div class="event-date">Dec 12</div>
+        <div class="event-title">Senior Recital: Jose Viera Calles, violin</div>
+        <div class="event-meta">7:30&ndash;8:30pm</div>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Dec 12</div>
+        <div class="event-title">&ldquo;A Bright Room Called Day&rdquo; (CCPA Production)</div>
+        <div class="event-meta">7:30&ndash;9:30pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+      <div class="event-card highlight">
+        <div class="event-date">Dec 13</div>
+        <div class="event-title">&ldquo;A Bright Room Called Day&rdquo; (CCPA Production)</div>
+        <div class="event-meta">2:00&ndash;4:00pm</div>
+        <span class="tag">CCPA Production</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p class="lead">Have a club meeting, show, or cross-over event to add?</p>
+    <p class="sub">Email <a href="mailto:lcummings@roosevelt.edu">lcummings@roosevelt.edu</a> to get it on the next update &mdash; this calendar is updated as new events are confirmed.</p>
+  </div>
+
+  <footer>
+    <p>Musical Theatre &amp; Musical Theatre Dance &mdash; Chicago College of Performing Arts at Roosevelt University</p>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    try {
+      var buttons = document.querySelectorAll('.filter-btn');
+      var blocks = document.querySelectorAll('.month-block');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          buttons.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          var month = btn.getAttribute('data-month');
+          blocks.forEach(function (block) {
+            if (month === 'all' || block.getAttribute('data-month') === month) {
+              block.style.display = '';
+            } else {
+              block.style.display = 'none';
+            }
+          });
+        });
+      });
+    } catch (e) {}
+  })();
+</script>
+
+</body>
+</html>
